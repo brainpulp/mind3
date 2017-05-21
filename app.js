@@ -36,13 +36,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req,res,next){
-    if (req.isAuthenticated() || req.url == '/login' || req.url == '/signup' ){
-        return next();
-    } else {
-        res.redirect('/login');
-    }
-});
+// app.use(function(req,res,next){
+//     if (req.isAuthenticated() || req.url == '/login' || req.url == '/signup' ){
+//         return next();
+//     } else {
+//         res.redirect('/login');
+//     }
+// });
 app.use(app.router);
 
 if ('development' == app.get('env')) {
