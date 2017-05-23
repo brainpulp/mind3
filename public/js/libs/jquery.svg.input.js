@@ -648,7 +648,7 @@ $.extend(SVGInputElements.prototype, {
     width = ( typeof settings.width == 'undefined' ) ? -1 : settings.width; 
     height = ( typeof settings.height == 'undefined' ) ? -1 : settings.height; 
     delete settings.width; 
-    delete settings.height; 
+    delete settings.height;
     
     return (new SVGEditableText(this._wrapper)).init(parent, value, width, height, settings);
   },
@@ -3297,7 +3297,7 @@ $.extend(SVGTextMarker, {
       // render marker
       this._marker = this._wrapper.rect(
         this._settings.parent,
-        this._settings.x,// - textLength/2,
+        this._settings.x - 10,// - textLength/2,
         this._settings.y, 
         this._settings.width, 
         this._settings.height,
