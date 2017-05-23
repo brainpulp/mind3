@@ -3297,7 +3297,7 @@ $.extend(SVGTextMarker, {
       // render marker
       this._marker = this._wrapper.rect(
         this._settings.parent,
-        this._settings.x - 10,// - textLength/2,
+        this._settings.x - 8,// - textLength/2,
         this._settings.y, 
         this._settings.width, 
         this._settings.height,
