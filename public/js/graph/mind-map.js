@@ -56,7 +56,7 @@ var MM = (function() {
                 return (d.source.size + d.target.size)/300 + 125;
             })
             .charge(function(d) {
-                return -d.size / 10;
+                return -d.size / 5;
             })
             .on('tick', tick);
 

@@ -81,6 +81,9 @@ g.resize line {
     /*stroke-width: 4px;*/
 }
 
+g.resize circle {
+    opacity: 0;
+}
 
 
 /*button for fixed nodes*/

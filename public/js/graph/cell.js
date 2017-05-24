@@ -325,7 +325,7 @@ MM.node = (function() {
             .attr('r', resHandleSize*2.3)
             .attr('cx', -resHandleSize*2)
             .attr('cy', -resHandleSize*2)
-            .style({"opacity": 0, 'fill': node.datum().settings.shapeColor })
+            // .style({"opacity": 0, 'fill': node.datum().settings.shapeColor })
             .on("mousedown", function() {
                 d3.event.stopPropagation(); // not trigger 'mousedown' on the node
                 MM.graph.nodeBeingResized = d3.select(this).datum();
