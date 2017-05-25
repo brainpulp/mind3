@@ -16,6 +16,8 @@ var MM = (function() {
         dragLine,
         forceDrag;
 
+    var getColor = d3.scale.category20();
+
 //*** INITIALIZATION ***//
 
     that.init = function() {
@@ -56,7 +58,7 @@ var MM = (function() {
                 return (d.source.size + d.target.size)/300 + 125;
             })
             .charge(function(d) {
-                return -d.size / 5;
+                return -d.size;
             })
             .on('tick', tick);
 
@@ -454,9 +456,11 @@ var MM = (function() {
             var rect = d3.select(this);
             var color = d.settings.shapeColor || rect.style("fill");
             if (MM.graph.selected_node === d) {
-                rect.style('fill', d3.rgb(color).brighter(0.5));
+                // rect.style('fill', getColor(d.id).brighter(0.5));
+                console.log(color);
+                rect.style('fill', d3.rgb(getColor(d.id)).brighter(0.5));
             } else {
-                rect.style('fill', color);
+                // rect.style('fill', color);
             }
         });
 

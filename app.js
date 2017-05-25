@@ -14,7 +14,7 @@ var flash = require('connect-flash');
 var ejs = require('ejs');
 
 var dbConnect = require('./config/database');
-dbConnect(process.env.MONGOLAB_URI || 'mongodb://localhost/MindMap');
+dbConnect(process.env.MONGOLAB_URI || 'mongodb://mxgldz:mxgldz@ds151941.mlab.com:51941/d3mindmap');
 
 var passport = require('./config/passport');
 
@@ -36,13 +36,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(function(req,res,next){
-//     if (req.isAuthenticated() || req.url == '/login' || req.url == '/signup' ){
-//         return next();
-//     } else {
-//         res.redirect('/login');
-//     }
-// });
+app.use(function(req,res,next){
+    if (req.isAuthenticated() || req.url == '/login' || req.url == '/signup' ){
+        return next();
+    } else {
+        res.redirect('/login');
+    }
+});
 app.use(app.router);
 
 if ('development' == app.get('env')) {

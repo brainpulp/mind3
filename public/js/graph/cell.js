@@ -5,6 +5,8 @@ MM.node = (function() {
 
     var that = {};
 
+    var color = d3.scale.category20();
+
     // default node settings
     var prefs = {
         width: 110,
@@ -296,7 +298,8 @@ MM.node = (function() {
             .attr('rx', prefs.rx)
             .attr('ry', prefs.ry)
             .style('fill', function(d) {
-                return d.settings.shapeColor;
+                // return d.settings.shapeColor;
+                return color(d.id);
             })
             .style("stroke", function(d) {
                 return d3.rgb(d.settings.shapeColor).darker();
