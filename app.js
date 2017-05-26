@@ -14,8 +14,8 @@ var flash = require('connect-flash');
 var ejs = require('ejs');
 
 var dbConnect = require('./config/database');
-// dbConnect(process.env.MONGOLAB_URI || 'mongodb://mxgldz:mxgldz@ds151941.mlab.com:51941/d3mindmap');
-dbConnect(process.env.MONGOLAB_URI || 'mongodb://localhost:27017/MindMap');
+dbConnect(process.env.MONGOLAB_URI || 'mongodb://mxgldz:mxgldz@ds151941.mlab.com:51941/d3mindmap');
+// dbConnect(process.env.MONGOLAB_URI || 'mongodb://localhost:27017/MindMap');
 
 var passport = require('./config/passport');
 
