@@ -4,12 +4,65 @@ body {
     font-family: "Verdana";
 }
 
+.navbar-inverse {
+    position: relative;
+    min-height: 50px;
+    background-color: #222;
+}
+
+.container-fluid {
+    padding: 0 15px;
+    margin: 0 auto;
+    height: 50px;
+}
+
+.navbar-header {
+    float: left;
+}
+
+.navbar-right {
+    float: right;
+    margin-right: -15px;
+}
+
+.navbar-brand {
+    height: 50px;
+    padding: 15px;
+    font-size: 18px;
+    line-height: 20px;
+    color: #cccccc;
+    text-decoration: none;
+    position: absolute;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: #ffffff;
+}
+
+.navbar-nav>li {
+    float: left;
+    position: relative;
+    list-style: none;
+}
+
+.navbar-nav>li>a {
+    color: #cccccc;
+    text-decoration: none;
+    padding: 10px 15px;
+    line-height: 20px;
+}
+
+.navbar-nav>li>a:hover {
+    color: #ffffff;
+}
+
 .save-alert {
     display: none;
     width: 60%;
     padding: 10px;
     font-size: 20px;
-    color: darkblue;
+    color: #ffff00;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -26,7 +79,6 @@ svg {
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
-    margin-top: 30px;
 }
 
 svg:not(.active):not(.ctrl) {
@@ -137,29 +189,19 @@ g.fixed .pin {
 
 
 /*** outliner ***/
-#dashboard {
-    background-color: #ffffff;
-    width: 200px;
-    position: absolute;
-    height: 100%;
-    overflow-y: auto;
-    float: left;
-}
-
-#dashboard .project-name {
-    border-bottom: 1px solid black;
-    padding: 6px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-}
 
 #outliner {
-    /*height: 100%;*/
+    height: calc(100% - 50px);
+    position: absolute;
+    width: 180px;
+    background-color: #ffffff;
+    border-right: 2px solid #cccccc;
+    overflow-x: auto;
 }
 
 #graph {
-    float: left;
+    position: fixed;
+    height: 100%;
 }
 
 a.jstree-anchor.dragged-to {
@@ -190,21 +232,6 @@ g.node-widget g.option circle {
 g.node-widget.hidden, g.node-widget g.panel.hidden {
     display: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*SVG Input Elements */
 

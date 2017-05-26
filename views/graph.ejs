@@ -10,15 +10,19 @@
 <body>
     <div id="colorpickerTrigger"></div>
 
-    <div id="dashboard">
-        <div class="project-name">Physio Diagram</div>
-        <div id="outliner"></div>
-    </div>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Physio Diagram</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" class="save-project">Save Project</a></li>
+          <li><a href="/">Project List</a></li>
+        </ul>
+      </div>
+    </nav>
 
-    <div id="controls">
-        <button class="save-project">Save</button>
-        <a href="/">Project List</a>
-    </div>
+    <div id="outliner"></div>
 
     <div id="graph">
         <svg>
