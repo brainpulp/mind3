@@ -299,7 +299,8 @@ MM.node = (function() {
             .attr('ry', prefs.ry)
             .style('fill', function(d) {
                 // return d.settings.shapeColor;
-                return color(d.id);
+                console.log(d);
+                return color(d.children.length);
             })
             .style("stroke", function(d) {
                 return d3.rgb(d.settings.shapeColor).darker();

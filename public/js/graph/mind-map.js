@@ -58,7 +58,7 @@ var MM = (function() {
                 return (d.source.size + d.target.size)/300 + 125;
             })
             .charge(function(d) {
-                return -d.size;
+                return -d.size / 2;
             })
             .on('tick', tick);
 
@@ -335,6 +335,21 @@ var MM = (function() {
             $(window).on("load resize", handler.window.resize);
         };
 
+        //Save projects automatically
+        function autoSave() {
+            var saveTimer = setInterval(function() {
+                $(".save-alert").css("display", "block");
+                handler.postGraphData();
+                clearInterval(saveTimer);
+                setTimeout(function() {
+                    $(".save-alert").css("display", "none");
+                    autoSave();
+                }, 5000);
+            }, 30000);
+        }
+
+        autoSave();
+
         return that;
 
     }());
@@ -456,11 +471,9 @@ var MM = (function() {
             var rect = d3.select(this);
             var color = d.settings.shapeColor || rect.style("fill");
             if (MM.graph.selected_node === d) {
-                // rect.style('fill', getColor(d.id).brighter(0.5));
-                console.log(color);
-                rect.style('fill', d3.rgb(getColor(d.id)).brighter(0.5));
+                rect.style('fill', d3.rgb(getColor(d.children.length)).brighter(0.5));
             } else {
-                // rect.style('fill', color);
+                rect.style('fill', getColor(d.children.length));
             }
         });
 
