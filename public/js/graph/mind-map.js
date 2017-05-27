@@ -494,7 +494,6 @@ var MM = (function() {
     // shortens nodes and links data for saving to database
     function serializeGraph() {
         var nodes = MM.graph.nodes.map(function(node) {
-            console.log(node);
             return {
                 id: node.id,
                 childrenIds: node.children.map(function(child) {return child.id}),

@@ -90,6 +90,10 @@ svg g#hints text {
     font-size: 12px;
 }
 
+#hints {
+    display: none;
+}
+
 path.link {
     fill: none;
     stroke: #595959;
