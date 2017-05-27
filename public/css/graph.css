@@ -194,10 +194,6 @@ g.fixed .pin {
     height: calc(100% - 50px);
     position: absolute;
     width: 180px;
-    background-color: #ffffff;
-    border-right: 2px solid #cccccc;
-    overflow-x: auto;
-    z-index: 1;
 }
 
 #graph {

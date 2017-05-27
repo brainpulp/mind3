@@ -271,7 +271,6 @@ var MM = (function() {
                 url: '/projects',
                 data: data,
                 success: function(data) {
-                    console.log(data);
                     data.id && (MM.graph.projectId = data.id);
                     // TODO notify user
                 },
@@ -495,11 +494,17 @@ var MM = (function() {
     // shortens nodes and links data for saving to database
     function serializeGraph() {
         var nodes = MM.graph.nodes.map(function(node) {
+            console.log(node);
             return {
                 id: node.id,
                 childrenIds: node.children.map(function(child) {return child.id}),
                 parentIds: node.parents.map(function(parent) {return parent.id}),
-                text: node.text
+                text: node.text,
+                width: node.width,
+                height: node.height,
+                px: node.px,
+                py: node.py,
+                settings: node.settings
             }
         });
 
