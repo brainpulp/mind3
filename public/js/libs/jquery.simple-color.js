@@ -186,7 +186,7 @@
       var container = $("<div class='simpleColorContainer' />");
 
       // Absolutely positioned child elements now 'work'.
-			container.css('position', 'relative');
+			container.css({'position':'relative', 'top':'55px'});
 
       // Create the color display box
       var defaultColor = (this.value && this.value != '') ? this.value : options.defaultColor;

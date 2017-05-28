@@ -336,6 +336,7 @@ var MM = (function() {
 
         //Save projects automatically
         function autoSave() {
+            // if (!MM.hasOwnProperty('graph')) return;
             var saveTimer = setInterval(function() {
                 $(".save-alert").css("display", "block");
                 handler.postGraphData();
