@@ -2,6 +2,8 @@ $(document).ready(function() {
     MM.init();
 });
 
+var autoFlag = true;
+
 var MM = (function() {
 
     'use strict';
@@ -174,6 +176,10 @@ var MM = (function() {
                 if(!d3.event.ctrlKey && !MM.graph.mousedown_node && !MM.graph.panned && !MM.graph.nodeBeingResized) {
                     // insert new node at point
                     MM.graph.newNode(++MM.graph.lastNodeId, null, d3.mouse(this));
+                    if (autoFlag) {
+                        autoSave();
+                        autoFlag = false;
+                    }
                     MM.restart();
                 }
 
@@ -336,7 +342,6 @@ var MM = (function() {
 
         //Save projects automatically
         function autoSave() {
-            // if (!MM.hasOwnProperty('graph')) return;
             var saveTimer = setInterval(function() {
                 $(".save-alert").css("display", "block");
                 handler.postGraphData();
@@ -347,8 +352,6 @@ var MM = (function() {
                 }, 5000);
             }, 30000);
         }
-
-        autoSave();
 
         return that;
 
