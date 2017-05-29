@@ -186,7 +186,7 @@
       var container = $("<div class='simpleColorContainer' />");
 
       // Absolutely positioned child elements now 'work'.
-			container.css({'position':'relative', 'top':'55px'});
+			container.css({'position':'relative', 'top':'55px', 'z-index': 1});
 
       // Create the color display box
       var defaultColor = (this.value && this.value != '') ? this.value : options.defaultColor;
@@ -210,9 +210,8 @@
         // Bind and namespace the click listener only when the chooser is
         // displayed. Unbind when the chooser is closed.
         $('html').bind("click.simpleColorDisplay", function(e) {
-          $('html').unbind("click.simpleColorDisplay");
-          $('.simpleColorChooser').hide();
-
+          // $('html').unbind("click.simpleColorDisplay");
+          // $('.simpleColorChooser').hide();
           // If the user has not selected a new color, then revert the display.
           // Makes sure the selected cell is within the current color chooser.
           var target = $(e.target);
