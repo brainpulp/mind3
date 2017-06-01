@@ -209,9 +209,9 @@ MM.node = (function() {
         changeSize(node, newWidht, newHeight, 0);
 
         // update the size of textfield
-        var newFontSize = 14 * newWidht / 100;
-        MM.node.changeFontSize(d.id, newFontSize);
-        // MM.node.updateTextField(node);
+        // var newFontSize = 14 * newWidht / 140;
+        // MM.node.changeFontSize(d.id, newFontSize);
+        MM.node.updateTextField(node);
 
         // normalize node motion after resuming the force
         MM.graph.nodeBeingResized.x = topLeft.x + newWidht/2;
