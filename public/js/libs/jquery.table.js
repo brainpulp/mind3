@@ -19,7 +19,7 @@ $("#custom-table tbody").css({"background":"#fff"});
 function showModal(index) {
 	$("#modal").remove();
 
-	var left = $("#custom-table #custom").offset().left;
+	var left = $("#custom-table #custom").position().left + 250;
 	for(var i = 0 ; i < headerData.length ; i ++) {
 		if (index >= i + 1) {
 			left += headerData[i].width + 10;
@@ -28,7 +28,7 @@ function showModal(index) {
 		}
 	}
 
-	var top = $("#custom-table tbody").offset().top;
+	var top = $("#custom-table tbody").position().top;
 
 	var modal = {"text": "<div id='modal' data='"+index+"'></div>",
 		"css": {"position": "absolute", "left": left + "px", "top":top + "px", "padding":"5px 10px", "background":"white", "border":"solid 1px", "z-index":1006}};
@@ -58,7 +58,7 @@ function showAddFieldModal(action, index) {
 
 	var h3 = (action == "create") ? "Add Field" : "Edit Field";
 	var modal = {"text":"<div id='add-modal'><h3>"+h3+"</h3></div>",
-		"css":{"position":"absolute", "top":"50px", "width":"300px", "left":"calc((100% - 300px)/2)", "padding":"10px", "background":"white", "z-index":1, "border-radius":"10px", "border":"solid #888"}};
+		"css":{"position":"absolute", "top":"50px", "width":"300px", "left":"calc((100% - 300px)/2)", "padding":"10px", "background":"white", "z-index":1001, "border-radius":"10px", "border":"solid #888"}};
 	$("body").append(modal.text);
 
 	var name = (action == "create") ? "" : headerData[index].title;
@@ -96,7 +96,7 @@ function showAddFieldModal(action, index) {
 	}
 
 	$("body").append("<div class='cover'></div>");
-	$(".cover").css({"position":"absolute", "top":0, "width":"100%", "height":"100%", "background":"rgba(0, 0, 0, 0.2)"});
+	$(".cover").css({"position":"absolute", "top":0, "width":"100%", "height":"100%", "background":"rgba(0, 0, 0, 0.2)", "z-index":1000});
 	$("#add-modal h3").css({"text-align":"center"});
 	$("#add-modal input").css({"width":"100%"});
 	$("#add-modal textarea").css({"width":"100%"});
@@ -122,6 +122,7 @@ function createTableHeader() {
 		$("#custom th span").css({"width": "30%"});
 	});
 	$("#custom-table th").css({"border":"solid 1px", "padding":"5px"});
+	$("#custom-table th span").css({"float":"right", "text-align":"right"});
 	$("#custom-table a.add-row").css({"font-size":"20px", "text-decoration":"none", "line-height":0});
 }
 
