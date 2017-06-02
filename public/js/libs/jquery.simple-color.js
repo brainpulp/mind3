@@ -186,7 +186,7 @@
       var container = $("<div class='simpleColorContainer' />");
 
       // Absolutely positioned child elements now 'work'.
-			container.css({'position':'relative', 'top':'55px', 'z-index': 1});
+			container.css({'position':'relative', 'top':'55px', 'z-index': 1000});
 
       // Create the color display box
       var defaultColor = (this.value && this.value != '') ? this.value : options.defaultColor;
@@ -277,6 +277,7 @@
               event.data.input.value = color;
               $(event.data.input).change();
               $(event.data.displayBox).data('color', color);
+              $("body").css({"background-color":color});
               event.data.displayBox.css('background-color', color);
               event.data.chooser.hide();
 

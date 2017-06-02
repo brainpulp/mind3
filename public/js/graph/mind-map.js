@@ -2,13 +2,12 @@ $(document).ready(function() {
     MM.init();
 });
 
-var autoFlag = true;
-
 var MM = (function() {
 
     'use strict';
 
     var that = {};
+    var backgroundColor = "";
 
     var svgG,
         zoomG,
@@ -124,6 +123,7 @@ var MM = (function() {
                 success: function(graph) {
 //                MM.graph.projectId = graph._id;
                     var data = deserializeGraph(graph.data);
+                    $("body").css("background-color", graph.data.background);
                     MM.graph.buildGraph(data);
                     MM.outliner.build(data.nodes);
                 }
@@ -131,7 +131,6 @@ var MM = (function() {
         } else {
             MM.outliner.init();
         }
-
         MM.widget.init(visG);
     };
 
@@ -176,10 +175,6 @@ var MM = (function() {
                 if(!d3.event.ctrlKey && !MM.graph.mousedown_node && !MM.graph.panned && !MM.graph.nodeBeingResized) {
                     // insert new node at point
                     MM.graph.newNode(++MM.graph.lastNodeId, null, d3.mouse(this));
-                    if (autoFlag) {
-                        autoSave();
-                        autoFlag = false;
-                    }
                     MM.restart();
                 }
 
@@ -267,6 +262,7 @@ var MM = (function() {
         };
 
         handler.postGraphData = function() {
+            backgroundColor = $("body").css("background-color");
             var data = {
                 id: MM.graph.projectId,
                 name: MM.graph.findNodeById(1).text,
@@ -330,7 +326,8 @@ var MM = (function() {
                 .on("mousemove", handler.vis.mousemove)
                 .on("mouseup",   handler.vis.mouseup);
 
-            $("#controls").find(".save-project").click(handler.postGraphData);
+            // $("#controls").find(".save-project").click(handler.postGraphData);
+            $(".save-project").click(handler.postGraphData);
 
             d3.select(window)
                 .on('keydown',   handler.window.keydown)
@@ -350,8 +347,10 @@ var MM = (function() {
                     $(".save-alert").css("display", "none");
                     autoSave();
                 }, 5000);
-            }, 30000);
+            }, 60000);
         }
+
+        autoSave();
 
         return that;
 
@@ -520,7 +519,8 @@ var MM = (function() {
 
         return {
             nodes: nodes,
-            links: links
+            links: links,
+            background: backgroundColor
         }
     }
 

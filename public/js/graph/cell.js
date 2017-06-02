@@ -27,7 +27,7 @@ MM.node = (function() {
                 solid: 0,
                 dotted: 1,
                 dashed: 0.5
-            }
+            },
         }
     };
 
@@ -301,7 +301,9 @@ MM.node = (function() {
             .attr('ry', prefs.ry)
             .style('fill', function(d) {
                 // return d.settings.shapeColor;
+                d.settings.shapeColor = color(d.children.length);
                 return color(d.children.length);
+                // return color(d.weight);
             })
             .style("stroke", function(d) {
                 return d3.rgb(d.settings.shapeColor).darker();
@@ -509,12 +511,17 @@ MM.node = (function() {
             var textWidth = nodeD.width - prefs.padding.hor * 2;
             var settings = {width: textWidth}; //  align: 'middle'
             // for custom font size (override the CSS rules) provide fontSize
+
             if (nodeD.settings.fontSize) {
                 settings.fontSize = nodeD.settings.fontSize + 'px';
             }
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
+            prefs.fontSize = (nodeD.width - 110) / 10 + 14;
+            // settings.fontSize = prefs.fontSize;
+            console.log(prefs.padding);
+
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
 
             if (text.length > 20 && !MM.graph.nodeBeingResized) {

@@ -107,7 +107,7 @@ svg:not(.active):not(.ctrl) path.link {
 
 rect.mouseevents {
     fill: #E8E8E8;
-    opacity: .5;
+    opacity: 0;
 }
 
 path.link.selected {
@@ -199,6 +199,7 @@ g.fixed .pin {
     position: absolute;
     width: 180px;
     z-index: 1;
+    display: none;
 }
 
 #graph {
