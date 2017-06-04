@@ -516,7 +516,7 @@ MM.node = (function() {
                 settings.fontColor = nodeD.settings.fontColor;
             }
             prefs.fontSize = (nodeD.width - 110) / 10 + 14;
-            // settings.fontSize = prefs.fontSize;
+            settings.fontSize = prefs.fontSize;
             console.log(prefs.padding);
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
