@@ -49,10 +49,10 @@ setTimeout(function(){
 		var padding = 20;
 
 		for(var i = 0 ; i < indexArr.length ; i ++) {
-			var shapes = ["rounded", "rect", "circle", "oval"];
+			var shapes = ["rounded", "straight", "circle", "diamond"];
 			$(".tree-grid tbody").append("<tr></tr>");
 			var data = MM.graph.nodes[indexArr[i] - 1];
-			$(".tree-grid tbody tr:last-child").append("<td><a>+</a>"+data.text+"</td>");
+			$(".tree-grid tbody tr:last-child").append("<td><a class='expanded'>-</a>"+data.text+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.height+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.width+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.weight+"</td>");
@@ -62,9 +62,9 @@ setTimeout(function(){
 			$(".tree-grid tbody tr:last-child").append("<td>"+parseInt(data.y)+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td style='background-color:"+data.settings.shapeColor+"'></td>");
 			$(".tree-grid tbody tr:last-child").append("<td class='shape'></td>");
-			$(".tree-grid tbody tr:last-child .shape").append("<select></select>");
+			$(".tree-grid tbody tr:last-child .shape").append("<select data='"+indexArr[i]+"'></select>");
 			shapes.map(function(shape) {
-				$(".tree-grid tbody tr:last-child .shape select").append("<option value='"+data.settings.shape+"'>"+data.settings.shape+"</option>");				
+				$(".tree-grid tbody tr:last-child .shape select").append("<option value='"+shape+"'>"+shape+"</option>");				
 			});
 			$(".tree-grid tbody tr:last-child").append("<td class='"+data.settings.borderStyle+"'><hr></td>");
 
@@ -95,10 +95,15 @@ setTimeout(function(){
 			$(".tree-grid tbody tr:last-child td:eq(0) a").css({"width":padding+"px", "display":"inline-block"});
 		}
 		$(".tree-grid table").css({"border-collapse":"collapse"});
+		$(".tree-grid").css({"position":"absolute"});
 		$(".tree-grid tbody .solid hr").css({"border-style":"solid"});
 		$(".tree-grid tbody .rounded").css({"height":"15px", "width":"30px", "border":"solid 1px", "border-radius":"5px", "background-color":"#aaaaaa", "margin":"auto"});
 		$(".tree-grid td, .tree-grid th").css({"border":"1px solid", "text-align":"center", "padding":"3px 5px"});
 		$(".tree-grid tr td:first-child").css({"text-align":"left"});
+
+		$(".tree-grid .shape select").on("change", function() {
+			MM.node.changeShape($(this).attr("data"), this.value);
+		});
 	}
 
 	function getIndex(srcIndex, src) {

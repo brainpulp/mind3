@@ -170,7 +170,6 @@ MM.node = (function() {
      * @returns {Object} node - the mutated object passed in
      */
     that.create = function(node) {
-
         node.id = +node.id;
         node.text = node.text || "";
         node.width = prefs.width;
@@ -303,7 +302,6 @@ MM.node = (function() {
                 // return d.settings.shapeColor;
                 d.settings.shapeColor = color(d.children.length);
                 return color(d.children.length);
-                // return color(d.weight);
             })
             .style("stroke", function(d) {
                 return d3.rgb(d.settings.shapeColor).darker();
@@ -320,7 +318,6 @@ MM.node = (function() {
             .on('mousedown', handler.mousedown)
             .on('mouseup', handler.mouseup)
             .on('dblclick', handler.dblclick);
-
 
         //append resize handle
         var resHandleSize = prefs.height/15;

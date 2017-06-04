@@ -126,6 +126,11 @@ var MM = (function() {
                     $("body").css("background-color", graph.data.background);
                     MM.graph.buildGraph(data);
                     MM.outliner.build(data.nodes);
+                    data.nodes.map(function(node) {
+                        console.log(node.id);
+                        console.log(node.settings.shape);
+                        // MM.node.changeShape(node.id, node.settings.shape);
+                    });
                 }
             });
         } else {
