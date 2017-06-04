@@ -199,7 +199,6 @@ g.fixed .pin {
     position: absolute;
     width: 180px;
     z-index: 1;
-    display: none;
 }
 
 #graph {

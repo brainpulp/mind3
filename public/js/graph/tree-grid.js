@@ -95,7 +95,7 @@ setTimeout(function(){
 			$(".tree-grid tbody tr:last-child td:eq(0) a").css({"width":padding+"px", "display":"inline-block"});
 		}
 		$(".tree-grid table").css({"border-collapse":"collapse"});
-		$(".tree-grid").css({"position":"absolute"});
+		$(".tree-grid").css({"position":"absolute", "top":"100px", "right":"0"});
 		$(".tree-grid tbody .solid hr").css({"border-style":"solid"});
 		$(".tree-grid tbody .rounded").css({"height":"15px", "width":"30px", "border":"solid 1px", "border-radius":"5px", "background-color":"#aaaaaa", "margin":"auto"});
 		$(".tree-grid td, .tree-grid th").css({"border":"1px solid", "text-align":"center", "padding":"3px 5px"});

@@ -17,8 +17,8 @@
             <td><%= project.get('description') %></td>
             <td>
                 <a class="edit" href="/projects/<%= project.get('_id') %>">Edit</a>
-<!--                 |
-                <a class="delete" href="javascript:void(0)" data-id="<%= project.get('_id') %>">Delete</a> -->
+                |
+                <a class="delete" href="javascript:void(0)" data-id="<%= project.get('_id') %>">Delete</a>
                 |
                 <a class="share" href="javascript:void(0)" data-id="<%= project.get('_id') %>" data-toggle="modal" data-target="#myModal">Share</a>
             </td>
