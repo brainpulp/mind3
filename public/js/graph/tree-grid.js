@@ -8,10 +8,12 @@ setTimeout(function(){
 	var srcArr = [];
 	var indexArr = [];
 	var treeArr = [];
+	var thData = ["text", "height", "width", "weight", "px", "py", "x", "y", "color", "shape", "border style"];
 
 	MM.graph.links.map(function(links) {
 		srcArr.push([links.source.id, links.target.id]);
 	});
+
 	for(var i = 1 ; i <= MM.graph.nodes.length ; i ++){
 		var flag = false;
 		for(var j = 0 ; j < MM.graph.links.length ; j ++) {
@@ -22,12 +24,16 @@ setTimeout(function(){
 				flag = true;
 			}			
 		}
+		if (MM.graph.links.length == 0) {
+			flag = true;
+		}
 		if (flag) {
 			srcIndexArr.push(i);
 		} else {
 			tgtIndexArr.push(i);
 		}
 	}
+
 	srcIndexArr.map(function(index) {
 		treeArr = [];
 		treeArr.push(index);
@@ -41,10 +47,10 @@ setTimeout(function(){
 	});
 
 	if (typeof MM.graph.nodes[0] != "undefined") {
-		var thData = ["text", "height", "width", "weight", "px", "py", "x", "y", "color", "shape", "border style"];
 		thData.map(function (data) {
 			$(".tree-grid thead tr").append("<th>"+data+"</th>");
 		});
+
 
 		var padding = 20;
 
@@ -52,7 +58,7 @@ setTimeout(function(){
 			var shapes = ["rounded", "straight", "circle", "diamond"];
 			$(".tree-grid tbody").append("<tr></tr>");
 			var data = MM.graph.nodes[indexArr[i] - 1];
-			$(".tree-grid tbody tr:last-child").append("<td><a class='expanded'>-</a>"+data.text+"</td>");
+			$(".tree-grid tbody tr:last-child").append("<td><a class='expanded' data='"+i+"'><span>-</span></a>"+data.text+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.height+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.width+"</td>");
 			$(".tree-grid tbody tr:last-child").append("<td>"+data.weight+"</td>");
@@ -92,10 +98,14 @@ setTimeout(function(){
 				padding = 20;
 			}
 
+			if(srcIndexArr.indexOf(indexArr[i]) >= 0) {
+				padding = 20;
+			}
+
 			$(".tree-grid tbody tr:last-child td:eq(0) a").css({"width":padding+"px", "display":"inline-block"});
 		}
 		$(".tree-grid table").css({"border-collapse":"collapse"});
-		$(".tree-grid").css({"position":"absolute", "top":"100px", "right":"0"});
+		$(".tree-grid").css({"position":"absolute", "top":"100px", "right":"0", "z-index":2});
 		$(".tree-grid tbody .solid hr").css({"border-style":"solid"});
 		$(".tree-grid tbody .rounded").css({"height":"15px", "width":"30px", "border":"solid 1px", "border-radius":"5px", "background-color":"#aaaaaa", "margin":"auto"});
 		$(".tree-grid td, .tree-grid th").css({"border":"1px solid", "text-align":"center", "padding":"3px 5px"});
@@ -104,7 +114,60 @@ setTimeout(function(){
 		$(".tree-grid .shape select").on("change", function() {
 			MM.node.changeShape($(this).attr("data"), this.value);
 		});
+
+		$(".tree-grid tbody tr a:first-child span").css({"width":"15px", "background-color":"#428bca", "color":"white", "display":"block", "text-align":"center"})
 	}
+
+	$(document).on("click", ".tree-grid tbody .expanded", function(evt) {
+		$($(this)[0]).removeClass("expanded");
+		$($(this)[0]).addClass("collapsed");
+		$($(this)[0]).html("<span>+</span>");
+		$(".tree-grid tbody tr a:first-child span").css({"width":"15px", "background-color":"#428bca", "color":"white", "display":"block", "text-align":"center"})
+		var i = parseInt($($(this)[0]).attr("data")) + 1;
+		var padding = $($(".tree-grid tbody tr td:first-child a")[i - 1]).width();
+		while($(".tree-grid tbody tr:eq("+i+") a").width() > padding) {
+			$(".tree-grid tbody tr:eq("+i+")").hide();
+			i ++;
+		}
+	});
+
+	$(document).on("click", ".tree-grid tbody .collapsed", function(evt) {
+		$($(this)[0]).removeClass("collapsed");
+		$($(this)[0]).addClass("expanded");
+		$($(this)[0]).html("<span>-</span>");
+		$(".tree-grid tbody tr a:first-child span").css({"width":"15px", "background-color":"#428bca", "color":"white", "display":"block", "text-align":"center"})
+		var i = parseInt($($(this)[0]).attr("data")) + 1;
+		var padding = $($(".tree-grid tbody tr td:first-child a")[i - 1]).width();
+		while($(".tree-grid tbody tr:eq("+i+") a").width() > padding) {
+			$(".tree-grid tbody tr:eq("+i+")").show();
+			$(".tree-grid tbody tr:eq("+i+") td:first-child a span").text("-");
+			i ++;
+		}
+	});
+
+	$(document).on("click", ".tree-grid thead th", function() {
+		var rowId = $(this).index();
+		if (rowId == 0) {
+			$(".tree-grid").append("<div class='items-modal'><a id='rename-raw' data='"+rowId+"'>Rename</a></div>");
+		} else {
+			$(".tree-grid").append("<div class='items-modal'><a id='rename-raw' data='"+rowId+"'>Rename</a><a id='delete-row' data='"+rowId+"'>Delete</a></div>");
+		}
+		$(".tree-grid .items-modal").css({"position":"absolute", "left":$(".tree-grid thead th:eq("+rowId+")").position().left, "top":$(".tree-grid tbody tr:first-child td:eq("+rowId+")").position().top, "background-color":"#f5f5f5", "border":"solid 1px #a5a5a5", "border-radius":"3px"});
+		$(".tree-grid .items-modal a").css({"padding":"5px 10px", "border-bottom":"solid 1px #a5a5a5", "display":"block", "color":"darkblue"});
+	})
+
+	$(document).on("click", "#delete-row", function() {
+		var index = $(this).attr("data");
+		$(".tree-grid .items-modal").remove();
+		if(confirm("Are you sure you want to remove this raw?")) {
+			$(".tree-grid tbody tr td").remove(":nth-child("+(parseInt(index) + 1)+")");
+			$(".tree-grid thead th").remove(":nth-child("+(parseInt(index) + 1)+")");
+		}
+	});
+
+	$("body").click(function(e) {
+		$(".tree-grid .items-modal").remove();
+	});
 
 	function getIndex(srcIndex, src) {
 		var ignArr = [];
