@@ -40,8 +40,14 @@
             <thead><tr></tr></thead>
             <tbody></tbody>
         </table>
-    </div>    
+    </div>
+
+    <button class="color-picker"><<</button>    
 </body>
+
+<script type="text/javascript">
+    var simpleColorFlag = true;
+</script>
 
 <script type="text/javascript" src="/js/libs/d3.v3.js"></script>
 <script type="text/javascript" src="/js/libs/jstree/libs/jquery.js"></script>
@@ -56,6 +62,24 @@
 <script type="text/javascript" src="/js/libs/jquery.svg.input.js"></script>
 
 <script type="text/javascript">
+    function popColorPicker() {
+        if (simpleColorFlag) {
+            $("button.color-picker").css({"right":"122px"});
+            $("button.color-picker").text(">>");
+            $(".simpleColorChooser").css({"right":"0"});
+            simpleColorFlag = false;
+        } else {
+            $("button.color-picker").css({"right":"0"});
+            $("button.color-picker").text("<<");
+            $(".simpleColorChooser").css({"right":"-122px"});
+            simpleColorFlag = true;
+        }
+    }
+
+    $("button.color-picker").click(function () {
+        popColorPicker();
+    });
+
     var w = $("body").width() - 180;
     d3.select("#hints").attr("transform", ("translate(" + w + "," + 0 + ")"))
         .style("display", "block");
@@ -69,7 +93,7 @@
 <script src="/js/graph/outliner.js"></script>
 <script src="/js/graph/cell.js"></script>
 <script src="/js/graph/node-widget.js"></script>
-<script src="/js/graph/tree-grid.js"></script>
+<!-- <script src="/js/graph/tree-grid.js"></script> -->
 
 <% if (projectId) { %>
 <script>

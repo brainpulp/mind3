@@ -146,8 +146,8 @@
       'margin':           '0 0 0 5px',
       'width':            options.totalWidth,
       'height':           options.totalHeight,
-      'top':              0,
-      'left':             options.boxWidth,
+      'top':              '45px',
+      'right':             "-122px",
       'position':         'absolute',
       'background-color': '#fff'
     }, options.chooserCSS || {});
@@ -279,7 +279,9 @@
               $(event.data.displayBox).data('color', color);
               $("body").css({"background-color":color});
               event.data.displayBox.css('background-color', color);
-              event.data.chooser.hide();
+              // event.data.chooser.hide();
+              simpleColorFlag = false;
+              popColorPicker();
 
               // If 'displayColorCode' is turned on, display the currently selected color code as text inside the button.
               if (options.displayColorCode) {

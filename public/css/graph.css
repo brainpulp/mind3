@@ -2,6 +2,7 @@ body {
     margin: 0;
     background-color: #E8E8E8;
     font-family: "Verdana";
+    overflow-x: hidden;
 }
 
 .navbar-inverse {
@@ -317,6 +318,12 @@ rect.background {
     font-style: normal;
 }
 
-
+button.color-picker {
+    position: absolute;
+    top: 100px;
+    right: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
 
 
