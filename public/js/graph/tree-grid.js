@@ -181,6 +181,8 @@ setTimeout(function(){
 		$(document).on("click", "#delete-row", function() {
 			var index = $(this).attr("data");
 			$(".tree-grid .items-modal").remove();
+			thData.splice(parseInt(index), 1);
+			console.log(thData);
 			if(confirm("Are you sure you want to remove this row?")) {
 				$(".tree-grid tbody tr td").remove(":nth-child("+(parseInt(index) + 1)+")");
 				$(".tree-grid thead th").remove(":nth-child("+(parseInt(index) + 1)+")");
@@ -202,6 +204,7 @@ setTimeout(function(){
 
 		$(document).on("click", ".cover", function() {
 			$(".rename-modal").remove();
+			$(".add-modal").remove();
 			$(".cover").remove();
 		});
 
