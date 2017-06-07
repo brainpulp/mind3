@@ -325,7 +325,7 @@
    */
   $.fn.closeChooser = function() {
     this.each( function(index) {
-      $(this).data('container').find('.simpleColorChooser').hide();
+      // $(this).data('container').find('.simpleColorChooser').hide();
     });
 
     return this;

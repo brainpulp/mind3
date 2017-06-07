@@ -5,7 +5,10 @@ MM.node = (function() {
 
     var that = {};
 
-    var color = d3.scale.category20();
+    var color = function (index) {
+        var colors = ["aliceblue", "lightgreen", "antiquewhite", "aqua", "aquamarine", "coral", "cyan", "cornsilk", "gainsboro", "gold", "goldenrod", "greenyellow", "honeydew", "hotpink", "khaki", "lavender", "lavenderblush", "lawngreen", "lightblue", "lightcoral", "lightcyan", "lightgray", "lightpink", "lightsalmon", "lightskyblue"];
+        return colors[index % colors.length];
+    };
 
     // default node settings
     var prefs = {
@@ -301,6 +304,7 @@ MM.node = (function() {
             .style('fill', function(d) {
                 // return d.settings.shapeColor;
                 d.settings.shapeColor = color(d.children.length);
+                console.log(color(d.children.length));
                 return color(d.children.length);
             })
             .style("stroke", function(d) {
@@ -515,9 +519,8 @@ MM.node = (function() {
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            prefs.fontSize = (nodeD.width - 110) / 10 + 14;
-            settings.fontSize = prefs.fontSize;
-            console.log(prefs.padding);
+            // prefs.fontSize = (nodeD.width - 110) / 10 + 14;
+            // settings.fontSize = prefs.fontSize + "px";
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
 
@@ -527,14 +530,14 @@ MM.node = (function() {
                 handler.textFieldResized(textHeight, node);
             }
 
-            centerTextVertically(node);
+            centerText(node);
 
             textInput.bind("changeSize", function(e, width, height) {
                 handler.textFieldResized(height, node);
             });
 
             textInput.bind("change", function(e, text) {
-                centerTextVertically(node);
+                centerText(node);
                 // -1 used here as a workaround to deal with one last 'change' event
                 // after the text was submitted
                 if (MM.graph.textBeingEdited === -1) {
@@ -564,10 +567,19 @@ MM.node = (function() {
         });
     }
 
-    function centerTextVertically(node) {
+    function centerText(node) {
         var textarea = node.select("g.selectable.text");
         var offsetTop = (node.datum().height - textarea.select("rect.background").attr("height"))/2;
-        textarea.attr("transform", 'translate(' + [prefs.padding.hor, offsetTop] + ')');
+        var txtLen = node.datum().text.length;
+        if (node.datum().text.length == 0) {
+            txtLen = 10;
+        }
+
+        if (node.datum().width - txtLen * prefs.fontSize / 2.3 - prefs.padding.hor * 2 > 0) {
+            var offsetLeft = (node.datum().width - txtLen * prefs.fontSize / 2.3)/2;
+            textarea.attr("transform", 'translate(' + [offsetLeft, offsetTop] + ')');
+        } else 
+            textarea.attr("transform", 'translate(' + [prefs.padding.hor, offsetTop] + ')');
     }
 
     function pointsForDiamond(width, height) {
