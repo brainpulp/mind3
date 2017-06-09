@@ -5,11 +5,6 @@ MM.node = (function() {
 
     var that = {};
 
-    var color = function (index) {
-        var colors = ["aliceblue", "lightgreen", "antiquewhite", "aqua", "aquamarine", "coral", "cyan", "cornsilk", "gainsboro", "gold", "goldenrod", "greenyellow", "honeydew", "hotpink", "khaki", "lavender", "lavenderblush", "lawngreen", "lightblue", "lightcoral", "lightcyan", "lightgray", "lightpink", "lightsalmon", "lightskyblue"];
-        return colors[index % colors.length];
-    };
-
     // default node settings
     var prefs = {
         width: 110,
@@ -33,6 +28,11 @@ MM.node = (function() {
             },
         }
     };
+
+    var color = function (index) {
+        var colors = ["aliceblue", "lightgreen", "antiquewhite", "aqua", "aquamarine", "coral", "cyan", "cornsilk", "gainsboro", "gold", "goldenrod", "greenyellow", "honeydew", "hotpink", "khaki", "lavender", "lavenderblush", "lawngreen", "lightblue", "lightcoral", "lightcyan", "lightgray", "lightpink", "lightsalmon", "lightskyblue"];
+        return colors[index % colors.length];
+    };    
 
     var mouseOver; // true while mouse is over node
     // contains functions, handling events over nodes
@@ -304,7 +304,6 @@ MM.node = (function() {
             .style('fill', function(d) {
                 // return d.settings.shapeColor;
                 d.settings.shapeColor = color(d.children.length);
-                console.log(color(d.children.length));
                 return color(d.children.length);
             })
             .style("stroke", function(d) {

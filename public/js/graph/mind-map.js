@@ -17,8 +17,10 @@ var MM = (function() {
         dragLine,
         forceDrag;
 
-    var getColor = d3.scale.category20();
-
+    var getColor = function (index) {
+        var colors = ["aliceblue", "lightgreen", "antiquewhite", "aqua", "aquamarine", "coral", "cyan", "cornsilk", "gainsboro", "gold", "goldenrod", "greenyellow", "honeydew", "hotpink", "khaki", "lavender", "lavenderblush", "lawngreen", "lightblue", "lightcoral", "lightcyan", "lightgray", "lightpink", "lightsalmon", "lightskyblue"];
+        return colors[index % colors.length];
+    };
 //*** INITIALIZATION ***//
 
     that.init = function() {
@@ -179,6 +181,16 @@ var MM = (function() {
 
                 if(!d3.event.ctrlKey && !MM.graph.mousedown_node && !MM.graph.panned && !MM.graph.nodeBeingResized) {
                     // insert new node at point
+                    var flag = true;
+                    MM.graph.nodes.map(function(node) {
+                        if (node.text == "") {
+                            flag = false;
+                        }
+                    });
+
+                    if (flag == false) {
+                        return;
+                    }
                     MM.graph.newNode(++MM.graph.lastNodeId, null, d3.mouse(this));
                     MM.restart();
                 }
@@ -223,6 +235,16 @@ var MM = (function() {
                         if (MM.graph.selected_node && !MM.graph.textBeingEdited) {
                             var selected = MM.graph.selected_node;
                             if (selected.parents.length === 0) return;
+                            var flag = true;
+                            MM.graph.nodes.map(function(node) {
+                                if (node.text == "") {
+                                    flag = false;
+                                }
+                            });
+
+                            if (flag == false) {
+                                return;
+                            }
                             MM.graph.newNode(++MM.graph.lastNodeId, selected.parents[0], [selected.x + 5, selected.y]);
                             MM.restart();
                         }
@@ -232,6 +254,16 @@ var MM = (function() {
                             // add new child to selected node
                             var parent = MM.graph.selected_node;
                             if (!parent) return;
+                            var flag = true;
+                            MM.graph.nodes.map(function(node) {
+                                if (node.text == "") {
+                                    flag = false;
+                                }
+                            });
+
+                            if (flag == false) {
+                                return;
+                            }
                             MM.graph.newNode(++MM.graph.lastNodeId, parent, [parent.x + 5, parent.y]);
                             MM.restart();
                         }
