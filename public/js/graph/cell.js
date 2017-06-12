@@ -175,8 +175,9 @@ MM.node = (function() {
     that.create = function(node) {
         node.id = +node.id;
         node.text = node.text || "";
-        node.width = prefs.width;
-        node.height = prefs.height;
+        console.log(node);
+        node.width = typeof node.width != "undefined" ? node.width : prefs.width;
+        node.height = typeof node.height != "undefined" ? node.height : prefs.height;
         node.parents = node.parents || [];
         node.children = node.children || [];
         // default node settings
@@ -297,8 +298,8 @@ MM.node = (function() {
     that.draw = function(node) {
         node.append('svg:rect')
             .attr('class', 'node')
-            .attr('width', prefs.width)
-            .attr('height', prefs.height)
+            .attr('width', function(d) { return typeof d.width != "undefined" ? d.width : prefs.width; })
+            .attr('height', function(d) { return typeof d.height != "undefined" ? d.height : prefs.height; })
             .attr('rx', prefs.rx)
             .attr('ry', prefs.ry)
             .style('fill', function(d) {
@@ -327,7 +328,7 @@ MM.node = (function() {
         var resHandlePadding = resHandleSize;
         var resHandle = node.append("g")
             .attr("class", "resize")
-            .attr("transform", "translate(" + prefs.width + "," + prefs.height + ")");
+            .attr("transform", function(d) { return "translate(" + (typeof d.width != "undefined" ? d.width : prefs.width) + "," + (typeof d.height != "undefined" ? d.height : prefs.height) + ")"; });
         resHandle.append("circle")
             .attr('r', resHandleSize*2.3)
             .attr('cx', -resHandleSize*2)
@@ -350,7 +351,7 @@ MM.node = (function() {
         // append pin button
         var pin = node.append("g")
             .attr("class", "pin")
-            .attr("transform", "translate(" + (prefs.width - 5) + ",-7)")
+            .attr("transform", function(d) { return "translate(" + (typeof d.width != "undefined" ? d.width - 5 : prefs.width - 5) + ",-7)"; })
             .on("click", handler.unpinNode);
         // for mouseevents:
         pin.append("circle")
@@ -504,6 +505,7 @@ MM.node = (function() {
 
     function appendTextField(node) {
         var nodeD = node.datum();
+        // var text = nodeD.text;
         var text = nodeD.text || prefs.placeholder;
         var nodeSVG = node.node();
         // older version of jQuery must be used here (1.7.2)
@@ -518,7 +520,7 @@ MM.node = (function() {
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            // prefs.fontSize = (nodeD.width - 110) / 10 + 14;
+            // prefs.fontSize = (nodeD.width - 110) / 10 + 13;
             // settings.fontSize = prefs.fontSize + "px";
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
