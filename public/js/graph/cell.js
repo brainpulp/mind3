@@ -175,7 +175,6 @@ MM.node = (function() {
     that.create = function(node) {
         node.id = +node.id;
         node.text = node.text || "";
-        console.log(node);
         node.width = typeof node.width != "undefined" ? node.width : prefs.width;
         node.height = typeof node.height != "undefined" ? node.height : prefs.height;
         node.parents = node.parents || [];
@@ -520,8 +519,8 @@ MM.node = (function() {
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            // prefs.fontSize = (nodeD.width - 110) / 10 + 13;
-            // settings.fontSize = prefs.fontSize + "px";
+            prefs.fontSize = (nodeD.width - 110) / 10 + 13;
+            settings.fontSize = prefs.fontSize + "px";
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
 
