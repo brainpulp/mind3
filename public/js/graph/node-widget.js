@@ -333,11 +333,11 @@ MM.widget = (function() {
                         .attr("class", "")
                         .attr("rx", 0)
                         .attr("ry", 0)
-                        .attr("width", 80)
+                        .attr("width", 100)
                         .attr("height", 20);
                     selectG.append("text")
                         .attr("x", 10)
-                        .attr("y", 13)
+                        .attr("y", 15)
                         .attr("fill", "#333")
                         .attr("font-size", 14)
                         .text(options.children[index].children[0].children[i].name);
