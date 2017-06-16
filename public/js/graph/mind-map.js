@@ -143,7 +143,6 @@ var MM = (function() {
 
                     data.nodes.map(function(node) {
                         // console.log(node.id);
-                        console.log(node.settings.shape);
                         MM.node.changeShape(node.id, node.settings.shape);
                     });
                 }
