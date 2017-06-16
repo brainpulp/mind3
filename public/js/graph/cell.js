@@ -43,9 +43,10 @@ MM.node = (function() {
             mouseOver = true;
 
             // prevent widget.hide() if mouse moved from widget to it's node
-//            if (MM.widget.nodeId === d.id) {
-//                MM.widget.hovered = true;
-//            }
+           // if (MM.widget.nodeId === d.id) {
+           //     MM.widget.hovered = true;
+           // }
+
             setTimeout(function() {
                 if (mouseOver && !MM.graph.mousedown_node && !MM.graph.nodeBeingResized) {
                     MM.widget.show(d);
@@ -55,6 +56,12 @@ MM.node = (function() {
             if (MM.graph.mousedown_node && d !== MM.graph.mousedown_node) {
                 // outline target node
                 d3.select(this).select("rect.node").style('stroke-width', 3);
+            }
+
+            showDeleteButton(d);                    
+
+            if ($(".nodeDeleteBtn").attr("data") != d.id) {
+                d3.selectAll("svg").selectAll(".nodeDeleteBtn").remove();
             }
         },
 
@@ -77,6 +84,18 @@ MM.node = (function() {
         },
 
         mousedown: function(d) {
+            // if ($(event.path[0]).attr("class") == "nodeDeleteBtn") {
+            //     MM.graph.removeNode(MM.graph.selected_node);
+            //     MM.restart();
+            // }
+            $(".nodeDeleteBtn").on("click", function() {
+                if (MM.graph.selected_node && !MM.graph.textBeingEdited && MM.graph.textBeingEdited != "") {
+                    MM.widget.hide();
+                    MM.graph.removeNode(MM.graph.selected_node);
+                    MM.restart();
+                }
+            });
+
             MM.graph.disableZooming();
             MM.widget.hide();
 
@@ -175,7 +194,6 @@ MM.node = (function() {
     that.create = function(node) {
         node.id = +node.id;
         node.text = node.text || "";
-        console.log(node);
         node.width = typeof node.width != "undefined" ? node.width : prefs.width;
         node.height = typeof node.height != "undefined" ? node.height : prefs.height;
         node.parents = node.parents || [];
@@ -402,6 +420,8 @@ MM.node = (function() {
     };
 
     that.changeShape = function(nodeId, newShape) {
+        d3.selectAll("svg").selectAll(".nodeDeleteBtn").remove();
+        
         var nodeG = MM.graph.findNodeGById(nodeId);
         var datum = nodeG.datum();
         var oldShape = datum.settings.shape;
@@ -503,6 +523,30 @@ MM.node = (function() {
         datum.settings.borderColor = newColor;
     };
 
+    function showDeleteButton(d) {
+        d3.selectAll("g.node")[0].map(function (data) {
+            if (d.id == $(data).attr("node-id") && $(".nodeDeleteBtn").length == 0) {
+                var btnG = d3.select(data).append("g")
+                    .attr("class", "nodeDeleteBtn")
+                    .attr("data", d.id)
+                    .attr("transform", "translate("+(d.width - 5)+", 5)");
+                btnG.append("circle")
+                    .attr("stroke", "red")
+                    .attr("stroke-width", 2)
+                    .attr("fill", "#fff")
+                    .attr("cx", 0)
+                    .attr("cy", 0)
+                    .attr("r", 10);
+                btnG.append("text")
+                    .attr("x", -5)
+                    .attr("y", 5)
+                    .attr("fill", "red")
+                    .attr("font-size", 18)
+                    .text("x");
+            }
+        });       
+    }
+
     function appendTextField(node) {
         var nodeD = node.datum();
         // var text = nodeD.text;
@@ -520,8 +564,8 @@ MM.node = (function() {
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            // prefs.fontSize = (nodeD.width - 110) / 10 + 13;
-            // settings.fontSize = prefs.fontSize + "px";
+            prefs.fontSize = (nodeD.width - 110) / 10 + 13;
+            settings.fontSize = prefs.fontSize + "px";
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
 

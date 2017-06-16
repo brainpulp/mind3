@@ -11,8 +11,10 @@ MM.widget = (function() {
 
     var that = {
         nodeId: null, // truthy when widget is visible
-        hovered: false // if the mouse is over widget
+        hovered: false, // if the mouse is over widget
+        widgetG: null
     };
+
 
     // the structure of widget
     var options = {
@@ -233,7 +235,7 @@ MM.widget = (function() {
                         }
                     }
                 ]
-            }
+            },
         ]
     };
     // TODO set depth in loop (recurse)
@@ -286,6 +288,9 @@ MM.widget = (function() {
         widget: {
             mouseover: function() {
                 that.hovered = true;
+                if ($(".selectList").attr("data") != that.nodeId) {
+                    d3.selectAll("svg").selectAll(".selectList").remove();
+                }
             },
             mouseout: function() {
                 that.hovered = false;
@@ -297,12 +302,57 @@ MM.widget = (function() {
             },
             mousedown: function() {
                 d3.event.stopPropagation();
+                var className = $(event.path[0]).attr("href");
+                var index = parseInt(className.substring(className.length - 1, className.length));
+                if (index != "NaN") {
+                    showSelectList(MM.graph.findNodeById(that.nodeId), index);
+                }
             },
             mouseup: function() {
                 d3.event.stopPropagation();
             }
         }
     };
+
+    function showSelectList(d, index) {
+        that.hide();
+        d3.selectAll("g.node")[0].map(function (data) {
+            if (d.id == $(data).attr("node-id") && $(".selectList").length == 0) {
+                var btnG = d3.select(data).append("g")
+                    .attr("class", "selectList")
+                    .attr("data", d.id)
+                    .attr("transform", "translate(0, "+d.height+")");
+                for(var i = 0 ; i < options.children[index].children[0].children.length ; i ++) {
+                    var selectG = btnG.append("g")
+                        .attr("class", "selectListItem")
+                        .attr("transform", "translate(10, "+20*i+")");
+                    selectG.append("rect")
+                        .attr("stroke", "rgb(168, 173, 178)")
+                        .attr("stroke-width", 1)
+                        .attr("fill", d.settings.shapeColor)
+                        .attr("class", "")
+                        .attr("rx", 0)
+                        .attr("ry", 0)
+                        .attr("width", 80)
+                        .attr("height", 20);
+                    selectG.append("text")
+                        .attr("x", 10)
+                        .attr("y", 13)
+                        .attr("fill", "#333")
+                        .attr("font-size", 14)
+                        .text(options.children[index].children[0].children[i].name);
+                }
+            }
+        });    
+
+        $(".selectList").click(function(event) {
+            var shape = $(event.target).html();
+            if (shape != "") {
+                MM.node.changeShape(MM.graph.selected_node.id, shape);
+                $(".selectList").remove();
+            }            
+        });
+    }
 
     // Returns path data for a rectangle with rounded right corners.
     // x: x-coordinate
@@ -507,7 +557,7 @@ MM.widget = (function() {
 };
 
     that.init = function(vis) {
-        var widgetG = vis
+        that.widgetG = vis
             .select('g.node-widget')
             .classed('hidden', true)
             .attr('style', "filter:url(#dropshadow)")
@@ -517,11 +567,11 @@ MM.widget = (function() {
             .on('mousedown', eventHandler.widget.mousedown);
 
 
-        build(options, widgetG);
+        build(options, that.widgetG);
 
         // make main panel to appear to be on top of others
-        widgetG.append('svg:use').attr('xlink:href', "#mainPanel");
-        widgetG.selectAll('use.control')
+        that.widgetG.append('svg:use').attr('xlink:href', "#mainPanel");
+        that.widgetG.selectAll('use.control')
             .data(options.children)
             .enter()
             .append('svg:use')

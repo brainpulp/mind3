@@ -267,11 +267,11 @@ rect.list {
 
 text { /* Paragrafs */
     /*font-family: "Georgia";*/
-    font-size: 14px;
+    /*font-size: 14px;*/
     /*font-weight: bold;*/
     /*text-anchor: middle;*/
     line-height: 14pt; /* Custom CSS for TextBox SVG */
-    fill: #595959;
+    /*fill: #595959;*/
     text-rendering: geometricprecision;
 }
 

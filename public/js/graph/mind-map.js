@@ -8,6 +8,10 @@ var MM = (function() {
 
     var that = {};
     var backgroundColor = "";
+    var scaleVal = 1;
+    var transVal = [0, 0];
+    var savedScaleVal = 1;
+    var savedTransVal = [0, 0];
 
     var svgG,
         zoomG,
@@ -124,14 +128,23 @@ var MM = (function() {
                 dataType: 'json',
                 success: function(graph) {
 //                MM.graph.projectId = graph._id;
+                    console.log(graph.data);
                     var data = deserializeGraph(graph.data);
-                    $("body").css("background-color", graph.data.background);
+                    $("body").css("background-color", data.background);
+                    savedScaleVal = data.scale;
+                    savedTransVal = data.trans;
+
                     MM.graph.buildGraph(data);
                     MM.outliner.build(data.nodes);
+
+                    visG.attr("transform",
+                        "translate(" + data.trans + ")"
+                        + " scale(" + data.scale + ")");
+
                     data.nodes.map(function(node) {
-                        console.log(node.id);
+                        // console.log(node.id);
                         console.log(node.settings.shape);
-                        // MM.node.changeShape(node.id, node.settings.shape);
+                        MM.node.changeShape(node.id, node.settings.shape);
                     });
                 }
             });
@@ -224,8 +237,8 @@ var MM = (function() {
                         if (MM.graph.selected_node && !MM.graph.textBeingEdited && MM.graph.textBeingEdited != "") {
                             MM.graph.removeNode(MM.graph.selected_node);
                         } //else if(MM.graph.selected_link) {
-                        //  MM.graph.links.splice(MM.graph.links.indexOf(MM.graph.selected_link), 1);
-                        //}
+                        //     MM.graph.links.splice(MM.graph.links.indexOf(MM.graph.selected_link), 1);
+                        // }
                         // MM.graph.selected_link = null;
                         MM.restart();
                         break;
@@ -302,7 +315,8 @@ var MM = (function() {
             backgroundColor = $("body").css("background-color");
             var data = {
                 id: MM.graph.projectId,
-                name: MM.graph.findNodeById(1).text,
+                // name: MM.graph.findNodeById(1).text,
+                name: MM.graph.nodes[0].text,
                 data: serializeGraph()
             };
             $.ajax({
@@ -337,7 +351,11 @@ var MM = (function() {
             if (MM.graph.mousedown_node || MM.graph.nodeBeingResized) {return;}
 
             var trans = d3.event.translate;
-            var scale = d3.event.scale;
+            var scale = d3.event.scale * parseFloat(savedScaleVal);
+            trans[0] += parseFloat(savedTransVal[0]);
+            trans[1] += parseFloat(savedTransVal[1]);
+            transVal = trans;
+            scaleVal = scale;
 
             // zoom out: wheelDelta < 0, zoom in: wheelDelta > 0
             if ((scale < 0.1 && d3.event.sourceEvent.wheelDelta < 0) || (scale > 10 && d3.event.sourceEvent.wheelDelta > 0)) {
@@ -557,7 +575,9 @@ var MM = (function() {
         return {
             nodes: nodes,
             links: links,
-            background: backgroundColor
+            background: backgroundColor,
+            trans: transVal,
+            scale: scaleVal
         }
     }
 
@@ -584,7 +604,10 @@ var MM = (function() {
 
         return {
             nodes: nodes,
-            links: links
+            links: links,
+            background: data.background,
+            scale: typeof data.scale != "undefined" && data.scale != "NaN" ? data.scale : 1,
+            trans: typeof data.trans != "undefined" ? data.trans : [0, 0]
         };
 
         // substitutes node Ids with real node objects

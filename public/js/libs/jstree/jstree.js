@@ -535,6 +535,9 @@
 				.on("click.jstree", ".jstree-anchor", $.proxy(function (e) {
 						e.preventDefault();
 						$(e.currentTarget).focus();
+						var parent = $(".jstree-anchor.jstree-hovered").parent();
+						$(".outlinerDelBtn").remove();
+						$(".jstree-anchor.jstree-hovered").after("<a class='outlinerDelBtn' style='font-size:20px;color:red;padding:0 5px;border-radius:10px;border:solid 2px;background:white;' node-id="+parent.attr("node-id")+">x</a>");
 
                     // put clicked node in edit mode
                     MM.outliner.editNode($(e.currentTarget).closest("li.jstree-node[role='treeitem']"));
@@ -543,6 +546,14 @@
 
                     // previous line might have deselected all nodes. so, need to reselect
                     MM.outliner.selectNode(MM.graph.selected_node.id);
+                }, this))
+                .on("click.jstree", ".outlinerDelBtn", $.proxy(function (e) {
+                	var id = $(".outlinerDelBtn").attr("node-id");
+                	MM.graph.selected_node = MM.graph.findNodeById(id);
+                	if (MM.graph.selected_node && !MM.graph.textBeingEdited && MM.graph.textBeingEdited != "") {
+                        MM.graph.removeNode(MM.graph.selected_node);
+                        MM.restart();
+                    }
                 }, this))
 				.on('keydown.jstree', '.jstree-anchor', $.proxy(function (e) {
 						var o = null;
