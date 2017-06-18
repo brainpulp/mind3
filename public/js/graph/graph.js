@@ -14,6 +14,7 @@ MM.graph = (function() {
     that.mousedown_link = null;
     that.mousedown_node = null;
     that.mouseup_node = null;
+    that.enableNewNode = true;
 
     that.lastNodeId = 0;
 

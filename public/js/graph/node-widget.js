@@ -302,6 +302,7 @@ MM.widget = (function() {
             },
             mousedown: function() {
                 d3.event.stopPropagation();
+                $(".selectList").remove();
                 var className = $(event.path[0]).attr("href");
                 var index = parseInt(className.substring(className.length - 1, className.length));
                 if (index != "NaN") {
@@ -321,7 +322,20 @@ MM.widget = (function() {
                 var btnG = d3.select(data).append("g")
                     .attr("class", "selectList")
                     .attr("data", d.id)
-                    .attr("transform", "translate(0, "+d.height+")");
+                    .attr("transform", "translate(0, "+d.height+")")
+                    .on("mousedown", function() {
+                        var value = $(event.target).html();
+                        if (index == 1 && value != "") {
+                            MM.node.changeShape(MM.graph.selected_node.id, value);
+                        } else if (index == 0 && value == "bigger") {
+                            MM.node.changeFontSize(MM.graph.selected_node.id, 18);
+                        } else if (index == 0 && value == "smaller") {
+                            MM.node.changeFontSize(MM.graph.selected_node.id, 10);
+                        } else if (index == 2 && value != "") {
+                            MM.node.changeBorderStyle(MM.graph.selected_node.id, value);
+                        } 
+                        $(".selectList").remove();
+                    });
                 for(var i = 0 ; i < options.children[index].children[0].children.length ; i ++) {
                     var selectG = btnG.append("g")
                         .attr("class", "selectListItem")
@@ -329,7 +343,7 @@ MM.widget = (function() {
                     selectG.append("rect")
                         .attr("stroke", "rgb(168, 173, 178)")
                         .attr("stroke-width", 1)
-                        .attr("fill", d.settings.shapeColor)
+                        .attr("fill", "aliceblue")
                         .attr("class", "")
                         .attr("rx", 0)
                         .attr("ry", 0)
@@ -339,19 +353,10 @@ MM.widget = (function() {
                         .attr("x", 10)
                         .attr("y", 15)
                         .attr("fill", "#333")
-                        .attr("font-size", 14)
                         .text(options.children[index].children[0].children[i].name);
                 }
             }
         });    
-
-        $(".selectList").click(function(event) {
-            var shape = $(event.target).html();
-            if (shape != "") {
-                MM.node.changeShape(MM.graph.selected_node.id, shape);
-                $(".selectList").remove();
-            }            
-        });
     }
 
     // Returns path data for a rectangle with rounded right corners.
