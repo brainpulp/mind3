@@ -46,12 +46,13 @@ MM.node = (function() {
            // if (MM.widget.nodeId === d.id) {
            //     MM.widget.hovered = true;
            // }
+            MM.graph.selected_node = d;
 
             setTimeout(function() {
-                if (mouseOver && !MM.graph.mousedown_node && !MM.graph.nodeBeingResized) {
+                if (mouseOver && !MM.graph.mousedown_node && !MM.graph.nodeBeingResized && MM.graph.enableNewNode) {
                     MM.widget.show(d);
                 }
-            }, 600);
+            }, 300);
 
             if (MM.graph.mousedown_node && d !== MM.graph.mousedown_node) {
                 // outline target node
@@ -88,13 +89,6 @@ MM.node = (function() {
             //     MM.graph.removeNode(MM.graph.selected_node);
             //     MM.restart();
             // }
-            $(".nodeDeleteBtn").on("click", function() {
-                if (MM.graph.selected_node && !MM.graph.textBeingEdited && MM.graph.textBeingEdited != "") {
-                    MM.widget.hide();
-                    MM.graph.removeNode(MM.graph.selected_node);
-                    MM.restart();
-                }
-            });
 
             MM.graph.disableZooming();
             MM.widget.hide();
@@ -108,11 +102,11 @@ MM.node = (function() {
             MM.graph.mousedown_node = d;
             if(d3.event.ctrlKey) return;
 
-            if (d === MM.graph.selected_node) {
-                MM.graph.deselectNodes();
-            } else {
-                MM.graph.selectNode(d);
-            }
+            // if (d === MM.graph.selected_node) {
+            //     MM.graph.deselectNodes();
+            // } else {
+            //     MM.graph.selectNode(d);
+            // }
             MM.graph.selected_link = null;
 
             // reposition drag line
@@ -153,7 +147,7 @@ MM.node = (function() {
 
             // select new link
             MM.graph.selected_link = link;
-            MM.graph.deselectNodes();
+            // MM.graph.deselectNodes();
             MM.restart();
         },
 
@@ -239,6 +233,9 @@ MM.node = (function() {
         MM.graph.nodeBeingResized.y = topLeft.y + newHeight/2;
         MM.graph.nodeBeingResized.px = MM.graph.nodeBeingResized.x;
         MM.graph.nodeBeingResized.py = MM.graph.nodeBeingResized.y;
+
+        showDeleteButton(d);
+        $(".selectList").hide();
     };
 
     /**
@@ -393,6 +390,7 @@ MM.node = (function() {
         var nodeG = MM.graph.findNodeGById(nodeId);
         nodeG.datum().settings.fontSize = newSize;
         MM.node.updateTextField(nodeG);
+        MM.restart();
     };
 
     that.changeFontColor = function(nodeId, newColor) {
@@ -524,12 +522,22 @@ MM.node = (function() {
     };
 
     function showDeleteButton(d) {
+        $(".nodeDeleteBtn").remove();
         d3.selectAll("g.node")[0].map(function (data) {
             if (d.id == $(data).attr("node-id") && $(".nodeDeleteBtn").length == 0) {
                 var btnG = d3.select(data).append("g")
                     .attr("class", "nodeDeleteBtn")
                     .attr("data", d.id)
-                    .attr("transform", "translate("+(d.width - 5)+", 5)");
+                    .attr("transform", "translate("+(d.width - 5)+", 5)")
+                    .on("mousedown", function() {
+                        MM.graph.enableNewNode = false;
+                        MM.graph.removeNode(MM.graph.selected_node);
+                        MM.restart();
+                        MM.widget.hide();
+                        setTimeout(function() {
+                            MM.graph.enableNewNode = true;
+                        }, 500);
+                    });
                 btnG.append("circle")
                     .attr("stroke", "red")
                     .attr("stroke-width", 2)
@@ -544,7 +552,7 @@ MM.node = (function() {
                     .attr("font-size", 18)
                     .text("x");
             }
-        });       
+        });          
     }
 
     function appendTextField(node) {
@@ -559,12 +567,12 @@ MM.node = (function() {
             // for custom font size (override the CSS rules) provide fontSize
 
             if (nodeD.settings.fontSize) {
-                settings.fontSize = nodeD.settings.fontSize + 'px';
+                settings.fontSize = nodeD.settings.fontSize;
             }
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            prefs.fontSize = (nodeD.width - 110) / 10 + 13;
+            prefs.fontSize = typeof settings.fontSize == "undefined" ? (nodeD.width - 110) / 10 + 13 : ((nodeD.width - 110) / 10 + 13) * settings.fontSize / 14;
             settings.fontSize = prefs.fontSize + "px";
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);

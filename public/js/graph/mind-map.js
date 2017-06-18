@@ -203,7 +203,9 @@ var MM = (function() {
                     if (flag == false) {
                         return;
                     }
-                    MM.graph.newNode(++MM.graph.lastNodeId, null, d3.mouse(this));
+                    if (MM.graph.enableNewNode) {
+                        MM.graph.newNode(++MM.graph.lastNodeId, null, d3.mouse(this));
+                    }
                     MM.restart();
                 }
 
