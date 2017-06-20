@@ -8,9 +8,9 @@
     "dependencies": {
         "express": "3.5.2",
         "ejs": "*",
-        "mongoose" : "*",
-        "passport" : "*",
-        "passport-local" : "*",
-        "connect-flash" : "*"
+        "mongoose": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "connect-flash": "*"
     }
 }

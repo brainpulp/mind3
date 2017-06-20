@@ -137,6 +137,7 @@ MM.outliner = (function(){
         if (rootNodes.length === 0) {
             rootNodes = [nodes[0]];
         }
+        console.log(nodes);
 
         var treeData = rootNodes.map(function(node) {
             return format(node, [])
@@ -152,7 +153,9 @@ MM.outliner = (function(){
             if (nodesInBranch.indexOf(node.id) === -1) {
                 nodesInBranch.push(node.id);
                 treeNode.children = node.children.map(function(node) {
-                    return format(node, nodesInBranch);
+                    if (typeof node != "undefined") {
+                        return format(node, nodesInBranch);                        
+                    }
                 });
             }
             return treeNode;
@@ -190,7 +193,7 @@ MM.outliner = (function(){
 
     that.removeNode = function(node) {
         node.children.forEach(function(child) {
-            if (child.parents.length === 0) {
+            if (typeof child != "undefined" && child.parents.length === 0) {
                 suppressEvent = true;
                 // if no more parents, then there will be only one node in the tree
                 tree.move_node(MM.outliner.findNodesById(child.id)[0], "#", "last")

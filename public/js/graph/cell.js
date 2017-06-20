@@ -531,7 +531,10 @@ MM.node = (function() {
                     .attr("transform", "translate("+(d.width - 5)+", 5)")
                     .on("mousedown", function() {
                         MM.graph.enableNewNode = false;
-                        MM.graph.removeNode(MM.graph.selected_node);
+                        MM.graph.textBeingEdited = null;
+                        if (MM.graph.selected_node && !MM.graph.textBeingEdited && MM.graph.textBeingEdited != "") {
+                            MM.graph.removeNode(MM.graph.selected_node);
+                        }
                         MM.restart();
                         MM.widget.hide();
                         setTimeout(function() {

@@ -143,14 +143,22 @@ MM.graph = (function() {
             MM.graph.links.splice(MM.graph.links.indexOf(l), 1);
         });
 
+        MM.graph.nodes.map(function(parent) {
+            parent.children.map(function(child) {
+                if (typeof child == "undefined" || parent.children.indexOf(node) != -1) {
+                    parent.children.splice(parent.children.indexOf(node), 1);
+                }
+            });
+        });
+
         // remove node from parents[] array of its children
         node.children.forEach(function(child) {
-            child.parents.splice(child.parents.indexOf(node), 1);
+            if (typeof child != "undefined")
+                child.parents.splice(child.parents.indexOf(node), 1);
         });
 
         MM.graph.deselectNodes();
         MM.graph.lastClickedNode = null;
-
         MM.outliner.removeNode(node);
     };
 

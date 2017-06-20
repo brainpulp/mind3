@@ -128,7 +128,6 @@ var MM = (function() {
                 dataType: 'json',
                 success: function(graph) {
 //                MM.graph.projectId = graph._id;
-                    console.log(graph.data);
                     var data = deserializeGraph(graph.data);
                     $("body").css("background-color", data.background);
                     savedScaleVal = data.scale;
@@ -555,7 +554,8 @@ var MM = (function() {
         var nodes = MM.graph.nodes.map(function(node) {
             return {
                 id: node.id,
-                childrenIds: node.children.map(function(child) {return child.id}),
+                childrenIds: node.children.map(function(child) {
+                    if(typeof child != "undefined") return child.id}),
                 parentIds: node.parents.map(function(parent) {return parent.id}),
                 text: node.text,
                 width: node.width,
