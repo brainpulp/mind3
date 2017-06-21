@@ -626,16 +626,9 @@ MM.node = (function() {
     function centerText(node) {
         var textarea = node.select("g.selectable.text");
         var offsetTop = (node.datum().height - textarea.select("rect.background").attr("height"))/2;
-        var txtLen = node.datum().text.length;
-        if (node.datum().text.length == 0) {
-            txtLen = 10;
-        }
+        var offsetLeft = (node.datum().width - $(textarea.select("text")[0]).width())/2;
+        textarea.attr("transform", 'translate(' + [offsetLeft, offsetTop] + ')');
 
-        if (node.datum().width - txtLen * prefs.fontSize / 2.3 - prefs.padding.hor * 2 > 0) {
-            var offsetLeft = (node.datum().width - txtLen * prefs.fontSize / 2.3)/2;
-            textarea.attr("transform", 'translate(' + [offsetLeft, offsetTop] + ')');
-        } else 
-            textarea.attr("transform", 'translate(' + [prefs.padding.hor, offsetTop] + ')');
     }
 
     function pointsForDiamond(width, height) {
