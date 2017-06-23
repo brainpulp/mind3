@@ -1995,7 +1995,9 @@ $.extend(SVGEditableTextBox.prototype, {
     
     var padding = this._getGPadding(g);
     var maxWidth = this._width - padding['left'] - padding['right'];
-//     console.log(maxWidth);
+    var division = MM.node.getArea() / 2400;
+    var numOfText = this._width / ($("#textLabel").width() / this._text.length);
+    maxWidth = division > 1 ? numOfText / 12 * 80 : 80;
     
     // padding-top is applied through text elements,
     // padding-left is applied through tspan elements and 
@@ -2141,7 +2143,6 @@ $.extend(SVGEditableTextBox.prototype, {
           }
           
           wordWidth = cachedWord.width; 
-          
           if ((tmpRowWidth + wordWidth) <= maxWidth || maxWidth == -1) {
             // We're OK, add the word to the row
             var word = remainingWords.shift(); 

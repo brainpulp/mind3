@@ -32,7 +32,9 @@ MM.node = (function() {
     var color = function (index) {
         var colors = ["aliceblue", "lightgreen", "antiquewhite", "aqua", "aquamarine", "coral", "cyan", "cornsilk", "gainsboro", "gold", "goldenrod", "greenyellow", "honeydew", "hotpink", "khaki", "lavender", "lavenderblush", "lawngreen", "lightblue", "lightcoral", "lightcyan", "lightgray", "lightpink", "lightsalmon", "lightskyblue"];
         return colors[index % colors.length];
-    };    
+    };
+
+    var areaSize = 0;    
 
     var mouseOver; // true while mouse is over node
     // contains functions, handling events over nodes
@@ -521,6 +523,10 @@ MM.node = (function() {
         datum.settings.borderColor = newColor;
     };
 
+    that.getArea = function () {
+        return areaSize;
+    }
+
     function showDeleteButton(d) {
         $(".nodeDeleteBtn").remove();
         d3.selectAll("g.node")[0].map(function (data) {
@@ -566,7 +572,7 @@ MM.node = (function() {
         // older version of jQuery must be used here (1.7.2)
         $172(nodeSVG).svg(function(svg) {
             var textWidth = nodeD.width - prefs.padding.hor * 2;
-            var settings = {width: textWidth}; //  align: 'middle'
+            var settings = {width: textWidth, align:"middle"}; //  align: 'middle'
             // for custom font size (override the CSS rules) provide fontSize
 
             if (nodeD.settings.fontSize) {
@@ -575,8 +581,23 @@ MM.node = (function() {
             if (nodeD.settings.fontColor) {
                 settings.fontColor = nodeD.settings.fontColor;
             }
-            prefs.fontSize = typeof settings.fontSize == "undefined" ? (nodeD.width - 110) / 10 + 13 : ((nodeD.width - 110) / 10 + 13) * settings.fontSize / 14;
-            settings.fontSize = prefs.fontSize + "px";
+
+            areaSize = (nodeD.width - prefs.padding.hor * 2) * (nodeD.height - prefs.padding.vert * 2);
+            var preAreaSize = (50 - prefs.padding.vert * 2) * (110 - prefs.padding.hor * 2);
+            prefs.fontSize = typeof settings.fontSize == "undefined" ? areaSize / preAreaSize + 13 : (areaSize / preAreaSize + 13) * settings.fontSize / 14;
+            
+            getFontSize();
+            function getFontSize() {
+                settings.fontSize = prefs.fontSize + "px";
+                var labelText = $("#textLabel").text(text)
+                    .css({"font-size":prefs.fontSize});
+                var areaText = labelText.width() * labelText.height();
+                if(areaText > areaSize) {
+                    prefs.fontSize -= 1;
+                    getFontSize();
+                }
+                labelText.hide();
+            }
 
             var textInput = svg.input.text(prefs.padding.hor, prefs.padding.vert, text, settings);
 
@@ -626,7 +647,7 @@ MM.node = (function() {
     function centerText(node) {
         var textarea = node.select("g.selectable.text");
         var offsetTop = (node.datum().height - textarea.select("rect.background").attr("height"))/2;
-        var offsetLeft = (node.datum().width - $(textarea.select("text")[0]).width())/2;
+        var offsetLeft = (node.datum().width - textarea.select("text")[0][0].getBBox().width)/2;
         textarea.attr("transform", 'translate(' + [offsetLeft, offsetTop] + ')');
 
     }

@@ -458,23 +458,19 @@ var MM = (function() {
                     var r1 = new Point2D(node.x - node.width/2, node.y - node.height/2);
                     var r2 = new Point2D(node.x + node.width/2, node.y + node.height/2);
                     return Intersection.intersectLineRectangle(line.a1, line.a2, r1, r2);
-                    break;
                 case 'circle':
                     var c = new Point2D(node.x, node.y),
                         rx = node.width/2,
                         ry = node.height/2;
                     return Intersection.intersectEllipseLine(c, rx, ry, line.a1, line.a2);
-                    break;
                 case 'diamond':
                     var width = node.width,
                         height = node.height;
                     var points = [[width/2, 0], [width, height/2], [width/2, height], [0, height/2]] // pointsForDiamond
                         .map(function(p) {return new Point2D(p[0] + node.x - width/2, p[1] + node.y - height/2); });
                     return Intersection.intersectLinePolygon(line.a1, line.a2, points );
-                    break;
                 case 'transparent':
                     return nodeGeo.intersectionCoords(line, node, node.settings.prevShape || node.settings.shape);
-                    break;
                 default:
                     return {status: 'No Intersection'}
 
