@@ -584,7 +584,7 @@ MM.node = (function() {
 
             areaSize = (nodeD.width - prefs.padding.hor * 2) * (nodeD.height - prefs.padding.vert * 2);
             var preAreaSize = (50 - prefs.padding.vert * 2) * (110 - prefs.padding.hor * 2);
-            prefs.fontSize = typeof settings.fontSize == "undefined" ? areaSize / preAreaSize + 13 : (areaSize / preAreaSize + 13) * settings.fontSize / 14;
+            prefs.fontSize = typeof settings.fontSize == "undefined" ? areaSize / preAreaSize + 10 : (areaSize / preAreaSize + 10) * settings.fontSize / 14;
             
             getFontSize();
             function getFontSize() {
