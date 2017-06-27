@@ -534,7 +534,7 @@ MM.node = (function() {
                 var btnG = d3.select(data).append("g")
                     .attr("class", "nodeDeleteBtn")
                     .attr("data", d.id)
-                    .attr("transform", "translate("+(d.width - 5)+", 5)")
+                    .attr("transform", "translate("+(d.width - 10)+", 10)")
                     .on("mousedown", function() {
                         MM.graph.enableNewNode = false;
                         MM.graph.textBeingEdited = null;
