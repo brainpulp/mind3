@@ -1,14 +1,16 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-
-module.exports = function connect (connectionString) {
-    mongoose.connect(connectionString);
-
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error'));
-    db.once('open', function () {
-        console.log('Mongoose connected at: ', connectionString)
-    });
+module.exports = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://Sarath:VO8cXIB4trse33eH@cluster0.isshte6.mongodb.net/test",
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    throw new Error(error);
+  }
 };
-
-
